@@ -1,129 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rif50 | Coming Soon</title>
+    <title>منصة التصميم الجرافيكي والتراثي</title>
     <style>
-        :root {
-            --charcoal: #121212;
-            --safety-orange: #FF6600;
-            --glass-white: rgba(255, 255, 255, 0.05);
-            --text-gray: #a0a0a0;
-        }
-
-        body, html {
+        /* الإعدادات العامة */
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--charcoal);
-            color: white;
+            background-color: #111111; /* اللون المطلوب للخلفية */
+            color: #4C0808; /* لون الكتابة والمحتوى */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* حاوية الواجهة ثلاثية الأبعاد */
+        .hero-section {
+            height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-        }
-
-        /* Subtle animated background */
-        .bg-gradient {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1e1e1e 0%, #121212 100%);
-            z-index: -1;
-        }
-
-        .container {
             text-align: center;
-            padding: 3rem;
-            background: var(--glass-white);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 90%;
+            position: relative;
+            background: radial-gradient(circle, #1a1a1a 0%, #111111 100%);
         }
 
-        .logo-container img {
-            width: 180px;
-            height: auto;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 0 10px rgba(255, 102, 0, 0.2));
+        /* مكان الشعار */
+        .logo-container {
+            position: absolute;
+            top: 40px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            border: 2px solid #4C0808;
+            padding: 10px 20px;
+            text-transform: uppercase;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            z-index: 2;
+            max-width: 800px;
+            padding: 20px;
         }
 
         h1 {
-            font-size: 1.2rem;
-            letter-spacing: 0.5rem;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            color: var(--safety-orange);
-            font-weight: 300;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(76, 8, 8, 0.3);
         }
 
         p {
-            color: var(--text-gray);
+            font-size: 1.2rem;
             line-height: 1.6;
-            margin-bottom: 2.5rem;
-            font-weight: 300;
+            opacity: 0.9;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 102, 0, 0.1);
-            border: 1px solid var(--safety-orange);
-            color: var(--safety-orange);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* منطقة المحاكاة للواجهة ثلاثية الأبعاد */
+        .canvas-placeholder {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+            border: 1px dashed #4C0808;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            background: rgba(76, 8, 8, 0.05);
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
         }
 
-        .footer {
-            position: absolute;
-            bottom: 2rem;
-            font-size: 0.8rem;
-            color: #444;
-            letter-spacing: 1px;
+        .canvas-placeholder:hover {
+            transform: scale(1.02);
         }
 
-        .footer a {
-            color: #666;
-            text-decoration: none;
-            transition: color 0.3s;
+        /* أزرار التفاعل */
+        .btn {
+            margin-top: 30px;
+            padding: 12px 35px;
+            background-color: transparent;
+            color: #4C0808;
+            border: 1px solid #4C0808;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
         }
 
-        .footer a:hover {
-            color: var(--safety-orange);
+        .btn:hover {
+            background-color: #4C0808;
+            color: #111111;
         }
+
     </style>
 </head>
 <body>
 
-    <div class="bg-gradient"></div>
-
-    <div class="container">
-        <div class="status-badge">Under Construction</div>
-        
+    <section class="hero-section">
+        <!-- مكان الشعار -->
         <div class="logo-container">
-            <!-- Replace with your uploaded R50 logo path -->
-            <img src="rif50-logo.png" alt="Rif50 Logo">
+            LOGO
         </div>
 
-        <h1>Rif50</h1>
-        <p>Crafting a premium digital experience. Something exceptional is currently in development.</p>
-    </div>
+        <div class="main-content">
+            <h1>إبداع بصري بروح تراثية</h1>
+            <p>
+                نمزج بين حداثة التصميم الجرافيكي وعمق التراث الأصيل. 
+                هنا نصمم الهوية البصرية بأسلوب يجمع بين عراقة الماضي وتقنيات المستقبل ثلاثية الأبعاد.
+            </p>
 
-    <div class="footer">
-        &copy; 2026 Rif50 | Created by <a href="https://instagram.com/medbunz" target="_blank">Medbunz</a>
-    </div>
+            <!-- هنا يتم دمج ملفات الـ 3D مثل Three.js أو Spline -->
+            <div class="canvas-placeholder">
+                <span>[ منطقة عرض العناصر ثلاثية الأبعاد ]</span>
+            </div>
+
+            <button class="btn">استكشف الأعمال</button>
+        </div>
+    </section>
 
 </body>
 </html>
