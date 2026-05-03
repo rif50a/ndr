@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RIF50 | Coming Soon</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&family=Inter:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
 
         :root {
             --bg-color: #111111;
@@ -49,29 +49,24 @@
             max-width: 800px;
             padding: 20px;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: clamp(6rem, 15vw, 12rem);
-            line-height: 1;
-            margin-bottom: 2rem;
-            display: inline-block;
+        .logo-container {
+            margin-bottom: 3rem;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-img {
+            max-width: 280px; /* Adjust size as needed */
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(76, 8, 8, 0.4));
             user-select: none;
-        }
-
-        .logo span {
-            color: white;
-            letter-spacing: -0.05em;
-        }
-
-        .logo .highlight {
-            color: var(--brand-color);
-            margin-left: -0.3em;
-            display: inline-block;
-            transform: translateY(15%) rotate(-5deg);
         }
 
         .headline {
@@ -102,6 +97,7 @@
             padding: 8px 16px;
             border-radius: 2px;
             transition: all 0.3s ease;
+            cursor: default;
         }
 
         .service-item:hover {
@@ -134,9 +130,13 @@
                 gap: 1rem;
                 bottom: 20px;
                 padding: 0 20px;
+                align-items: center;
             }
             .headline {
                 letter-spacing: 0.4rem;
+            }
+            .logo-img {
+                max-width: 200px;
             }
         }
     </style>
@@ -146,21 +146,12 @@
     <div class="glow"></div>
 
     <div class="container">
-        <div class="logo">
-            <span>R</span><div class="highlight">50</div>
+        <div class="logo-container">
+            <!-- PASTE YOUR LOGO LINK BELOW IN THE src ATTRIBUTE -->
+            <img src="https://www.rif50.com/r50.png" alt="RIF50 Logo" class="logo-img">
         </div>
         
         <p class="headline">Evolution in progress</p>
-
-        <div class="services">
-            <div class="service-item">Prints</div>
-            <div class="service-item">Trophies</div>
-            <div class="service-item">Pub Banners</div>
-            <div class="service-item">Logo Creation</div>
-            <div class="service-item">Clothes</div>
-            <div class="service-item">Digital 3D Assets</div>
-        </div>
-    </div>
 
     <div class="footer">
         <div>Nador • Morocco</div>
