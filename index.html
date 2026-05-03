@@ -17,10 +17,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* Blocks text selection across the entire site */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
-            /* Set the solid background color */
             background-color: var(--bg-color);
             color: var(--brand-color);
             font-family: 'Inter', sans-serif;
@@ -54,7 +58,11 @@
         .logo-img {
             max-width: 240px;
             height: auto;
-            user-select: none;
+            /* Prevents dragging the image to save it */
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
             transition: transform 0.5s ease;
         }
 
@@ -115,11 +123,11 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Blocks right-click menu -->
 
     <div class="container">
         <div class="logo-container">
-            <img src="https://www.rif50.com/r50.png" alt="RIF50 Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('fallback-text').style.display='block';">
+            <img src="https://www.rif50.com/r50.png" alt="RIF50 Logo" class="logo-img" draggable="false" onerror="this.style.display='none'; document.getElementById('fallback-text').style.display='block';">
             <h1 id="fallback-text" style="display:none; font-size: 3rem; letter-spacing: 1rem;">RIF50</h1>
         </div>
         
