@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RIF50 | Coming Soon</title>
+    <title>RIF50 | Premium Store</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Playfair+Display:ital,wght@1,400;1,600&display=swap');
 
         :root {
             --bg-color: #111111;
             --brand-color: #4C0808;
+            --brand-bright: #961C1C;
+            --gold-color: #D4AF37;
+            --text-white: #FFFFFF;
             --text-muted: rgba(255, 255, 255, 0.4);
+            --border-muted: rgba(255, 255, 255, 0.08);
+            --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -21,30 +28,76 @@
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
+            -o-user-select: none;
             user-select: none;
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--brand-color);
+            color: var(--text-white);
             font-family: 'Inter', sans-serif;
-            height: 100vh;
-            width: 100vw;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Ambient glowing circles */
+        .ambient-glow-1 {
+            position: fixed;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(76, 8, 8, 0.2) 0%, rgba(17, 17, 17, 0) 70%);
+            top: -10vw;
+            right: -10vw;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            width: 50vw;
+            height: 50vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, rgba(17, 17, 17, 0) 70%);
+            bottom: -15vw;
+            left: -15vw;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Berber-inspired micro geometric grid overlay */
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(214, 175, 55, 0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ==================== 1. GATEKEEPER LOCK SCREEN ==================== */
+        #gatekeeper {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg-color);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            z-index: 100;
+            padding: 20px;
             text-align: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.8s ease;
         }
 
-        .container {
-            max-width: 800px;
-            padding: 20px;
-            z-index: 10;
+        .gatekeeper-container {
+            max-width: 480px;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
+            z-index: 10;
         }
 
         .logo-container {
@@ -58,7 +111,6 @@
         .logo-img {
             max-width: 240px;
             height: auto;
-            /* Prevents dragging the image to save it */
             -webkit-user-drag: none;
             -khtml-user-drag: none;
             -moz-user-drag: none;
@@ -80,39 +132,1154 @@
             animation: fadeIn 2s ease-out;
         }
 
-        .footer {
-            position: fixed;
-            bottom: 40px;
+        /* Password Form */
+        .password-form {
             width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 60px;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.25rem;
-            color: var(--text-muted);
-            z-index: 10;
+            max-width: 320px;
+            margin-top: 2.5rem;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out 0.5s forwards;
         }
 
-        .footer b {
+        .password-input-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .password-input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--brand-color);
+            font-size: 0.85rem;
+        }
+
+        .password-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--brand-color);
+            padding: 12px 15px 12px 40px;
+            border-radius: 4px;
+            color: var(--gold-color);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.3rem;
+            text-align: center;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .password-field:focus {
+            border-color: var(--gold-color);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--brand-color);
+            color: var(--text-white);
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .submit-btn:hover {
+            background-color: var(--brand-bright);
+            letter-spacing: 0.25rem;
+        }
+
+        .error-message {
+            color: var(--brand-bright);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            margin-top: 0.75rem;
+            display: none;
+            font-weight: 700;
+        }
+
+        /* ==================== 2. MAIN HEADER ==================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: rgba(17, 17, 17, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 90;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+
+        .header-logo img {
+            height: 35px;
+            width: auto;
+        }
+
+        .header-logo-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.4rem;
+            color: var(--text-white);
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--gold-color);
+        }
+
+        .nav-campaign-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #10B981;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .header-action {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .action-link {
+            border: 1px solid var(--brand-color);
+            color: var(--text-white);
+            text-decoration: none;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .action-link:hover {
+            border-color: var(--gold-color);
+            color: var(--gold-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-white);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Mobile menu drawer */
+        .mobile-drawer {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(17, 17, 17, 0.98);
+            border-bottom: 1px solid var(--border-muted);
+            padding: 30px;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 89;
+        }
+
+        .mobile-drawer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            font-weight: 700;
+        }
+
+        .mobile-drawer a:hover {
+            color: var(--gold-color);
+        }
+
+        /* ==================== 3. HERO SLIDER SECTION ==================== */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 5% 60px 5%;
+            position: relative;
+        }
+
+        .slider-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            align-items: center;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 50px;
+            animation: slideFadeIn 0.8s ease-out forwards;
+        }
+
+        .slide.active {
+            display: grid;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .slide-tag {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3rem;
+            color: var(--gold-color);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin-bottom: 1.5rem;
+            background: rgba(212, 175, 55, 0.02);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .slide-title span {
+            color: var(--brand-color);
+            display: block;
+        }
+
+        .slide-title .gold-txt {
+            color: var(--gold-color);
+        }
+
+        .slide-desc {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 520px;
+        }
+
+        .slide-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .primary-btn {
+            background-color: var(--brand-color);
+            color: var(--text-white);
+            border: 1px solid var(--brand-color);
+            padding: 14px 28px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .primary-btn:hover {
+            background-color: var(--brand-bright);
+            border-color: var(--brand-bright);
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--gold-color);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 14px 28px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--gold-color);
+            background: rgba(212, 175, 55, 0.02);
+        }
+
+        /* Slide Visual Frame matching Original Design language */
+        .slide-visual {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .visual-frame {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 0.95;
+            border: 1px solid var(--border-muted);
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s ease;
+        }
+
+        .visual-frame:hover {
+            transform: scale(1.02);
+            border-color: var(--brand-color);
+        }
+
+        /* Frame cyber decorations */
+        .frame-corner {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: var(--gold-color);
+            border-style: solid;
+            pointer-events: none;
+        }
+
+        .top-left { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
+        .top-right { top: 10px; right: 10px; border-width: 2px 2px 0 0; }
+        .bottom-left { bottom: 10px; left: 10px; border-width: 0 0 2px 2px; }
+        .bottom-right { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+
+        /* INTERACTIVE T-SHIRT VIEWER */
+        .tshirt-toggle-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            background: rgba(17, 17, 17, 0.8);
+            border: 1px solid var(--border-muted);
+            padding: 4px;
+            border-radius: 30px;
+            z-index: 5;
+        }
+
+        .tshirt-toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .tshirt-toggle-btn.active {
+            background: var(--brand-color);
+            color: var(--text-white);
+        }
+
+        /* Interactive Vector Graphic Renderings */
+        .tshirt-svg-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tshirt-svg {
+            width: 100%;
+            height: 100%;
+            max-height: 350px;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));
+            transition: var(--transition-smooth);
+        }
+
+        /* Slider Indicators */
+        .slider-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .slider-dots {
+            display: flex;
+            gap: 10px;
+        }
+
+        .slider-dot {
+            width: 24px;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .slider-dot.active {
+            background-color: var(--gold-color);
+        }
+
+        .slider-arrows {
+            display: flex;
+            gap: 15px;
+        }
+
+        .arrow-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border-muted);
+            background: transparent;
+            color: var(--text-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .arrow-btn:hover {
+            border-color: var(--gold-color);
+            color: var(--gold-color);
+        }
+
+        /* ==================== 4. PROMO INTERACTIVE CAMPAIGN ==================== */
+        #promo {
+            padding: 100px 5%;
+            background: rgba(255, 255, 255, 0.01);
+            border-top: 1px solid var(--border-muted);
+            border-bottom: 1px solid var(--border-muted);
+            text-align: center;
+            position: relative;
+        }
+
+        .section-header {
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+        }
+
+        .section-tag {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4rem;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            margin-bottom: 20px;
+        }
+
+        .section-title span {
+            color: var(--brand-bright);
+        }
+
+        .section-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .promo-ticker {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background-color: rgba(17, 17, 17, 0.9);
+            border: 1px solid var(--brand-color);
+            padding: 12px 25px;
+            border-radius: 30px;
+            margin-bottom: 40px;
+            font-size: 0.75rem;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }
+
+        .ticker-count {
+            color: var(--gold-color);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* Matrix Grid Selection */
+        .matrix-grid {
+            display: grid;
+            grid-template-cols: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            max-width: 900px;
+            margin: 0 auto 50px auto;
+        }
+
+        .matrix-tile {
+            aspect-ratio: 1;
+            background-color: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .matrix-tile:hover {
+            border-color: var(--gold-color);
+            transform: translateY(-4px);
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .matrix-tile.selected {
+            border-color: var(--brand-bright);
+            background-color: rgba(76, 8, 8, 0.2);
+        }
+
+        .tile-symbol {
+            font-size: 2rem;
+            color: var(--text-white);
+            opacity: 0.4;
+            transition: var(--transition-smooth);
+        }
+
+        .matrix-tile:hover .tile-symbol,
+        .matrix-tile.selected .tile-symbol {
+            opacity: 1;
+            color: var(--gold-color);
+        }
+
+        .tile-name {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        /* Promo Results Box */
+        .promo-results-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: rgba(17, 17, 17, 0.9);
+            border: 1px solid var(--gold-color);
+            border-radius: 8px;
+            padding: 40px 30px;
+            display: none;
+            animation: slideFadeIn 0.6s ease-out forwards;
+            position: relative;
+        }
+
+        .result-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: var(--gold-color);
+        }
+
+        .result-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .coupon-box {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px dashed var(--gold-color);
+            padding: 15px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 0.2rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .coupon-box:hover {
+            background-color: rgba(212, 175, 55, 0.05);
+        }
+
+        .coupon-box i {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .promo-claim-form {
+            text-align: left;
+        }
+
+        .promo-claim-form label {
+            display: block;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .claim-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .claim-email-input {
+            flex: 1;
+            background: var(--bg-color);
+            border: 1px solid var(--border-muted);
+            padding: 10px 15px;
+            border-radius: 4px;
+            color: var(--text-white);
+            font-size: 0.75rem;
+            outline: none;
+        }
+
+        .claim-email-input:focus {
+            border-color: var(--gold-color);
+        }
+
+        .claim-btn {
+            background-color: var(--gold-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .claim-btn:hover {
+            background-color: var(--text-white);
+        }
+
+        .claim-success {
+            font-size: 0.7rem;
+            color: #10B981;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            margin-top: 15px;
+            display: none;
+            font-weight: 700;
+        }
+
+        /* ==================== 5. GALLERY SECTION ==================== */
+        #gallery {
+            padding: 100px 5%;
+        }
+
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-muted);
+            color: var(--text-muted);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            font-weight: 700;
+            padding: 10px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            border-color: var(--gold-color);
+            color: var(--gold-color);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-cols: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background-color: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-muted);
+            border-radius: 8px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+        }
+
+        .product-card:hover {
+            border-color: var(--brand-color);
+            transform: translateY(-5px);
+        }
+
+        .card-visual-container {
+            width: 100%;
+            aspect-ratio: 1.1;
+            background-color: rgba(17, 17, 17, 0.8);
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            color: var(--gold-color);
+            background: rgba(17, 17, 17, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .product-card svg {
+            width: 65%;
+            height: 65%;
+            transition: var(--transition-smooth);
+        }
+
+        .product-card:hover svg {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            text-align: left;
+        }
+
+        .product-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            margin-bottom: 8px;
+        }
+
+        .product-sub {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .product-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-muted);
+            padding-top: 20px;
+        }
+
+        .product-price {
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold-color);
+        }
+
+        .buy-btn {
+            background-color: var(--brand-color);
+            color: var(--text-white);
+            border: none;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .buy-btn:hover {
+            background-color: var(--brand-bright);
+        }
+
+        /* ==================== 6. ABOUT RIF50 SECTION ==================== */
+        #about {
+            padding: 100px 5%;
+            background: rgba(255, 255, 255, 0.01);
+            border-top: 1px solid var(--border-muted);
+            border-bottom: 1px solid var(--border-muted);
+        }
+
+        .about-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .about-visual {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .about-circle {
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 1px solid var(--border-muted);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: rgba(17, 17, 17, 0.8);
+        }
+
+        .about-circle::before {
+            content: '';
+            position: absolute;
+            inset: -15px;
+            border-radius: 50%;
+            border: 1px dashed rgba(212, 175, 55, 0.15);
+            animation: spin 80s linear infinite;
+        }
+
+        .about-yaz {
+            font-size: 7rem;
+            color: var(--gold-color);
+            line-height: 1;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        .about-subtitle {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3rem;
+            color: var(--brand-bright);
+            font-weight: 700;
+        }
+
+        .about-text {
+            text-align: left;
+        }
+
+        .about-content-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .quote-block {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--gold-color);
+            border-left: 2px solid var(--brand-color);
+            padding-left: 20px;
+            margin: 25px 0;
+            line-height: 1.5;
+        }
+
+        .about-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            color: var(--text-muted);
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            padding: 80px 5% 40px 5%;
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            text-decoration: none;
+        }
+
+        .footer-logo img {
+            height: 40px;
+        }
+
+        .footer-logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5rem;
+            color: var(--text-white);
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-links a:hover {
+            color: var(--gold-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-muted);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            color: var(--text-muted);
+        }
+
+        .footer-bottom b {
             color: rgba(255, 255, 255, 0.7);
             font-weight: 700;
         }
 
+        /* Toast Messages */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--gold-color);
+            padding: 15px 25px;
+            border-radius: 4px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-content {
+            text-align: left;
+        }
+
+        .toast-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            color: var(--gold-color);
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .toast-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-white);
+            cursor: pointer;
+            font-size: 0.85rem;
+            opacity: 0.5;
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+        }
+
+        /* ==================== ANIMATIONS ==================== */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 600px) {
-            .footer {
-                flex-direction: column;
-                gap: 1.2rem;
-                bottom: 30px;
-                padding: 0 20px;
-                align-items: center;
-                letter-spacing: 0.15rem;
+        @keyframes slideFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ==================== RESPONSIVE LAYOUTS ==================== */
+        @media (max-width: 900px) {
+            nav {
+                display: none;
             }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .slide {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .slide-visual {
+                order: -1;
+            }
+
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            .about-wrapper {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .about-visual {
+                order: -1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
             .headline {
                 letter-spacing: 0.4rem;
                 font-size: 0.65rem;
@@ -123,20 +1290,713 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- Blocks right-click menu -->
+<body oncontextmenu="return false;">
 
-    <div class="container">
-        <div class="logo-container">
-            <img src="https://www.rif50.com/r50.png" alt="RIF50 Logo" class="logo-img" draggable="false" onerror="this.style.display='none'; document.getElementById('fallback-text').style.display='block';">
-            <h1 id="fallback-text" style="display:none; font-size: 3rem; letter-spacing: 1rem;">RIF50</h1>
+    <!-- Background Elements -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- ==================== 1. GATEKEEPER LOCK SCREEN ==================== -->
+    <div id="gatekeeper">
+        <div class="gatekeeper-container">
+            <div class="logo-container">
+                <img src="https://www.rif50.com/r50.png" alt="RIF50 Logo" class="logo-img" draggable="false" onerror="this.style.display='none'; document.getElementById('fallback-text').style.display='block';">
+                <h1 id="fallback-text" style="display:none; font-size: 3rem; letter-spacing: 1rem;">RIF50</h1>
+            </div>
+            <p class="headline">Evolution in progress</p>
+            
+            <div class="password-form">
+                <div class="password-input-wrapper">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <input type="password" id="access-password" class="password-field" placeholder="ACCESS CODE" autocomplete="off">
+                </div>
+                <button onclick="checkAccess()" class="submit-btn">Unlock Store</button>
+                <div id="error-alert" class="error-message">Access Credential Incorrect</div>
+            </div>
         </div>
+    </div>
+
+    <!-- ==================== MAIN STORE SPACE ==================== -->
+    <div id="main-content" style="display: none; opacity: 0; transition: opacity 0.8s ease;">
         
-        <p class="headline">Evolution in progress</p>
+        <!-- HEADER -->
+        <header>
+            <a href="#home" class="header-logo">
+                <img src="https://www.rif50.com/r50.png" alt="RIF50" onerror="this.style.display='none';">
+                <span class="header-logo-text">RIF50</span>
+            </a>
+
+            <nav>
+                <a href="#home" class="active" onclick="setActiveNav(this)">Home</a>
+                <a href="#promo" onclick="setActiveNav(this)" class="nav-campaign-badge">
+                    <span>Campaign</span>
+                    <span class="badge-dot"></span>
+                </a>
+                <a href="#gallery" onclick="setActiveNav(this)">Gallery</a>
+                <a href="#about" onclick="setActiveNav(this)">Heritage</a>
+            </nav>
+
+            <div class="header-action">
+                <a href="#promo" class="action-link">CLAIM SLOTS</a>
+                <button class="menu-toggle" onclick="toggleDrawer()"><i class="fa-solid fa-bars"></i></button>
+            </div>
+
+            <!-- Mobile Drawer -->
+            <div class="mobile-drawer" id="mobile-drawer">
+                <a href="#home" onclick="toggleDrawer()">Home</a>
+                <a href="#promo" onclick="toggleDrawer()">Campaign</a>
+                <a href="#gallery" onclick="toggleDrawer()">Gallery</a>
+                <a href="#about" onclick="toggleDrawer()">Heritage</a>
+            </div>
+        </header>
+
+        <!-- HERO SLIDER SECTION -->
+        <section id="home">
+            <div class="slider-wrapper">
+                
+                <!-- Slide 1: NEW FEATURED CROP APPAREL SHOWCASE -->
+                <div class="slide active" id="slide-0">
+                    <div class="slide-content">
+                        <div class="slide-tag">
+                            <span class="badge-dot" style="background-color: var(--gold-color);"></span> DROP 01 // PREMIUM APPAREL
+                        </div>
+                        <h2 class="slide-title">
+                            RIF SIGNATURE
+                            <span>HEAVY-WEIGHT TEE</span>
+                        </h2>
+                        <p class="slide-desc">
+                            A high-contrast physical artifact celebrating our culture. Crafted from premium 300GSM carded cotton with intricate black-ink traditional geometric ribbon layouts and the circular Yaz shield. 
+                            <br><br>
+                            <i>"Rif is my culture, my pride, and my home."</i>
+                        </p>
+                        <div class="slide-actions">
+                            <a href="#promo" class="primary-btn">Interactive Campaign</a>
+                            <a href="#gallery" class="secondary-btn">Explore Drop</a>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="visual-frame">
+                            <div class="frame-corner top-left"></div>
+                            <div class="frame-corner top-right"></div>
+                            <div class="frame-corner bottom-left"></div>
+                            <div class="frame-corner bottom-right"></div>
+                            
+                            <!-- INTERACTIVE T-SHIRT RENDERER -->
+                            <div class="tshirt-svg-container" id="tshirt-render-box">
+                                <!-- FRONT VIEW (DEFAULT) -->
+                                <svg class="tshirt-svg" id="tshirt-svg-front" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Shirt Outline Shadow & Body -->
+                                    <path d="M120 100 C150 95, 250 95, 280 100 L300 115 L350 140 L330 190 L300 180 L300 340 C300 350, 290 355, 280 355 L120 355 C110 355, 100 350, 100 340 L100 180 L70 190 L50 140 L100 115 Z" fill="#FBFBFB" stroke="#CCCCCC" stroke-width="2"/>
+                                    <!-- Neck Collar Details -->
+                                    <path d="M165 100 C165 115, 235 115, 235 100" fill="#EAEAEA" stroke="#CCCCCC" stroke-width="2"/>
+                                    <!-- Sleeve Borders -->
+                                    <path d="M50 140 L70 190" stroke="#E0E0E0" stroke-width="1.5"/>
+                                    <path d="M350 140 L330 190" stroke="#E0E0E0" stroke-width="1.5"/>
+                                    
+                                    <!-- THE ORIGINAL ARTWORK INTEGRATION FROM IMAGE (FRONT VIEW) -->
+                                    <!-- Left Column Geometric Vertical Strip -->
+                                    <g id="front-tribal-strip" transform="translate(235, 102)">
+                                        <rect x="0" y="0" width="22" height="252" fill="#111111"/>
+                                        <!-- Geometric cross patterns within the strip -->
+                                        <path d="M 0,0 L 22,22 M 22,0 L 0,22 M 0,22 L 22,44 M 22,22 L 0,44 M 0,44 L 22,66 M 22,44 L 0,66 M 0,66 L 22,88 M 22,66 L 0,88 M 0,88 L 22,110 M 22,88 L 0,110 M 0,110 L 22,132 M 22,110 L 0,132 M 0,132 L 22,154 M 22,132 L 0,154 M 0,154 L 22,176 M 22,154 L 0,176 M 0,176 L 22,198 M 22,176 L 0,198 M 0,198 L 22,220 M 22,198 L 0,220 M 0,220 L 22,242 M 22,220 L 0,242" stroke="#FFFFFF" stroke-width="1.5" opacity="0.95"/>
+                                        <path d="M 11,0 L 11,252" stroke="var(--gold-color)" stroke-width="0.8" opacity="0.6"/>
+                                    </g>
+                                    
+                                    <!-- Overlapping custom R50 Monogram Emblem -->
+                                    <g id="monogram-logo" transform="translate(225, 150)">
+                                        <circle cx="11" cy="11" r="14" fill="#111111" stroke="var(--gold-color)" stroke-width="1"/>
+                                        <text x="5" y="16" fill="#FFFFFF" font-family="'Inter', sans-serif" font-weight="bold" font-size="11">R</text>
+                                        <text x="11" y="17" fill="var(--gold-color)" font-family="'Inter', sans-serif" font-weight="bold" font-size="8">50</text>
+                                    </g>
+                                </svg>
+
+                                <!-- BACK VIEW (TOGGLED) -->
+                                <svg class="tshirt-svg" id="tshirt-svg-back" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                                    <!-- Shirt Outline Shadow & Body -->
+                                    <path d="M120 100 C150 95, 250 95, 280 100 L300 115 L350 140 L330 190 L300 180 L300 340 C300 350, 290 355, 280 355 L120 355 C110 355, 100 350, 100 340 L100 180 L70 190 L50 140 L100 115 Z" fill="#FBFBFB" stroke="#CCCCCC" stroke-width="2"/>
+                                    <!-- Back Neck Collar line -->
+                                    <path d="M165 100 C180 104, 220 104, 235 100" fill="none" stroke="#CCCCCC" stroke-width="2"/>
+                                    <!-- Sleeve Borders -->
+                                    <path d="M50 140 L70 190" stroke="#E0E0E0" stroke-width="1.5"/>
+                                    <path d="M350 140 L330 190" stroke="#E0E0E0" stroke-width="1.5"/>
+
+                                    <!-- BACK ARTWORK (MATCHING THE UPLOADED PHOTOGRAPH) -->
+                                    <!-- Left Side looping geometric trace ribbon -->
+                                    <path d="M235 102 L235 220 C235 250, 200 270, 165 250 C140 230, 140 180, 165 160 C190 140, 240 150, 255 180 C265 200, 265 240, 235 270 L235 352" stroke="#111111" stroke-width="16" stroke-linecap="round" fill="none"/>
+                                    <path d="M235 102 L235 220 C235 250, 200 270, 165 250 C140 230, 140 180, 165 160 C190 140, 240 150, 255 180 C265 200, 265 240, 235 270 L235 352" stroke="var(--gold-color)" stroke-width="1" stroke-dasharray="2 3" stroke-linecap="round" fill="none"/>
+
+                                    <!-- Central Sun Disk / Concentric Circle Shield -->
+                                    <g transform="translate(200, 185)">
+                                        <!-- Outer decorative ring -->
+                                        <circle cx="0" cy="0" r="38" fill="none" stroke="#111111" stroke-width="4"/>
+                                        <circle cx="0" cy="0" r="38" fill="none" stroke="var(--gold-color)" stroke-width="1" stroke-dasharray="3 3"/>
+                                        <!-- Inner ring -->
+                                        <circle cx="0" cy="0" r="28" fill="#111111"/>
+                                        <circle cx="0" cy="0" r="24" fill="none" stroke="var(--gold-color)" stroke-width="1"/>
+                                        <!-- Legend Yaz Symbol in Center -->
+                                        <text x="-9" y="8" fill="var(--text-white)" font-family="'Inter', sans-serif" font-weight="bold" font-size="24">ⵣ</text>
+                                    </g>
+
+                                    <!-- Lower Half Arch ribbon -->
+                                    <path d="M 140,320 A 50,50 0 0,1 230,320" stroke="#111111" stroke-width="10" fill="none"/>
+
+                                    <!-- Elegant calligraphic handwriting text exactly matching uploaded design -->
+                                    <text x="135" y="295" fill="#111111" font-family="'Playfair Display', serif" font-size="8" font-style="italic" font-weight="bold">Rif is my culture,</text>
+                                    <text x="135" y="307" fill="#111111" font-family="'Playfair Display', serif" font-size="8" font-style="italic" font-weight="bold">my pride, and my home.</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Front/Back Toggles -->
+                        <div class="tshirt-toggle-wrapper">
+                            <button class="tshirt-toggle-btn active" id="btn-toggle-front" onclick="toggleTshirt('front')">Front View</button>
+                            <button class="tshirt-toggle-btn" id="btn-toggle-back" onclick="toggleTshirt('back')">Back View</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: TEXTILE COUPLING TRADITIONAL -->
+                <div class="slide" id="slide-1">
+                    <div class="slide-content">
+                        <div class="slide-tag">
+                            <span class="badge-dot" style="background-color: var(--gold-color);"></span> DROP 02 // VOLCANIC EARTH
+                        </div>
+                        <h2 class="slide-title">
+                            TERRACOTTA
+                            <span class="gold-txt">ALGORITHMS</span>
+                        </h2>
+                        <p class="slide-desc">
+                            Raw clay extracted from Mount Tidghine, baked in wood-fired open kilns, then hand-inlaid with liquid gold circuitry configurations. Traditional pottery evolving into future premium physical artifacts.
+                        </p>
+                        <div class="slide-actions">
+                            <a href="#promo" class="primary-btn">Interactive Campaign</a>
+                            <a href="#gallery" class="secondary-btn">View Ceramics</a>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="visual-frame">
+                            <div class="frame-corner top-left"></div>
+                            <div class="frame-corner top-right"></div>
+                            <div class="frame-corner bottom-left"></div>
+                            <div class="frame-corner bottom-right"></div>
+                            <!-- Ceramic Cyber Vessel Outline -->
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M35 80 C35 80, 25 60, 25 40 C25 20, 38 15, 50 15 C62 15, 75 20, 75 40 C75 60, 65 80, 65 80 Z" fill="rgba(76, 8, 8, 0.2)" stroke="var(--gold-color)" stroke-width="2"/>
+                                <path d="M35 45 H65" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+                                <circle cx="50" cy="40" r="8" fill="var(--bg-color)" stroke="var(--gold-color)" stroke-width="1.5"/>
+                                <text x="46" y="45" fill="var(--gold-color)" font-family="monospace" font-size="10">ⵣ</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slider Controls -->
+                <div class="slider-controls">
+                    <div class="slider-dots">
+                        <div class="slider-dot active" onclick="setSlide(0)" id="dot-0"></div>
+                        <div class="slider-dot" onclick="setSlide(1)" id="dot-1"></div>
+                    </div>
+                    <div class="slider-arrows">
+                        <button class="arrow-btn" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i></button>
+                        <button class="arrow-btn" onclick="nextSlide()"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PROMO INTERACTIVE CAMPAIGN -->
+        <section id="promo">
+            <div class="section-header">
+                <span class="section-tag">Interactive Event</span>
+                <h2 class="section-title">THE GATE OF <span>TIDGHINE</span></h2>
+                <p class="section-desc">
+                    To mark our launch, we are reserving exactly <span style="color:var(--gold-color); font-weight:700;">10 absolute free-product orders</span> for our digital family. Select one of the cyber-Berber matrix nodes below to claim your spot. Once filled, next nodes guarantee a <span style="color:var(--text-white); font-weight:700;">half-price (50% Off) coupon code</span>.
+                </p>
+            </div>
+
+            <!-- Free Order Ticker -->
+            <div class="promo-ticker">
+                <span>Free slots remaining today:</span>
+                <span class="ticker-count" id="slots-count">6</span>
+                <span>/ 10</span>
+            </div>
+
+            <!-- Grid nodes -->
+            <div class="matrix-grid" id="matrix-grid">
+                <!-- Javascript will populate 12 custom symbols -->
+            </div>
+
+            <!-- Campaign Reveal Box -->
+            <div class="promo-results-container" id="results-box">
+                <div id="free-win-block" style="display: none;">
+                    <div class="result-title">Victory Verified</div>
+                    <p class="result-desc">
+                        You successfully registered a free order slot before they closed! Enjoy completely free delivery on your selected drop package.
+                    </p>
+                    <div class="coupon-box" onclick="copyCouponCode('RIF50-FREE')">
+                        <span>RIF50-FREE</span> <i class="fa-regular fa-copy"></i>
+                    </div>
+                </div>
+
+                <div id="half-win-block" style="display: none;">
+                    <div class="result-title">Discount Secured</div>
+                    <p class="result-desc">
+                        The 10 ultimate free spots are currently claimed, but you have successfully unlocked a 50% discount on your next product purchase!
+                    </p>
+                    <div class="coupon-box" onclick="copyCouponCode('RIF50-HALF')">
+                        <span>RIF50-HALF</span> <i class="fa-regular fa-copy"></i>
+                    </div>
+                </div>
+
+                <div class="promo-claim-form">
+                    <label>Activate Code & Bind To Email</label>
+                    <div class="claim-input-group">
+                        <input type="email" placeholder="YOUR EMAIL ADDRESS" class="claim-email-input" id="claim-email">
+                        <button class="claim-btn" onclick="submitPromoClaim()">Secure</button>
+                    </div>
+                    <div class="claim-success" id="claim-success-msg">Code validated & bound to system. check inbox soon.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PREMIUM PRODUCT GALLERY -->
+        <section id="gallery">
+            <div class="section-header" style="margin-bottom: 30px;">
+                <span class="section-tag">Digital Vault</span>
+                <h2 class="section-title">FUSION PRODUCTS</h2>
+                <p class="section-desc">
+                    Each physical piece contains an embedded cryptographic microchip to trace its artisan lineage back to the Moroccan cooperative who threw or spun it.
+                </p>
+            </div>
+
+            <div class="gallery-filter">
+                <button class="filter-btn active" onclick="filterGallery('all')">All Items</button>
+                <button class="filter-btn" onclick="filterGallery('apparel')">Apparel</button>
+                <button class="filter-btn" onclick="filterGallery('vessels')">Vessels</button>
+                <button class="filter-btn" onclick="filterGallery('silver')">Silver Matrix</button>
+            </div>
+
+            <div class="products-grid">
+                
+                <!-- Product 1: The uploaded Signature Tee -->
+                <div class="product-card" data-category="apparel">
+                    <div class="card-visual-container">
+                        <span class="card-tag">NEW DROP // PRE-RELEASE</span>
+                        <!-- Custom rendered preview -->
+                        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M60 50 C75 47, 125 47, 140 50 L150 58 L175 70 L165 95 L150 90 L150 170 C150 175, 145 178, 140 178 L60 178 C55 178, 50 175, 50 170 L50 90 L35 95 L25 70 L50 58 Z" fill="#FBFBFB" stroke="#CCCCCC" stroke-width="1"/>
+                            <path d="M117 51 L117 177" stroke="#111111" stroke-width="10"/>
+                            <path d="M117 51 L117 177" stroke="var(--gold-color)" stroke-width="1" stroke-dasharray="2 2"/>
+                            <circle cx="112" cy="75" r="7" fill="#111111" stroke="var(--gold-color)" stroke-width="0.5"/>
+                            <text x="109" y="78" fill="#FFFFFF" font-family="'Inter', sans-serif" font-weight="bold" font-size="6">R</text>
+                            <text x="90" y="130" fill="#111111" font-family="'Playfair Display', serif" font-style="italic" font-weight="bold" font-size="5">Rif is my culture...</text>
+                        </svg>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">R50 Signature Heavy Tee</h3>
+                        <p class="product-sub">Heavy Cotton (300GSM) & NFC Tag</p>
+                        <p class="product-desc">
+                            Ultra-heavy structural combed cotton with offset Amazigh ribbon print, signature monogram front patch, and full-back quote illustration.
+                        </p>
+                        <div class="product-footer">
+                            <span class="product-price">$75.00</span>
+                            <button class="buy-btn" onclick="attemptPurchase('R50 Signature Heavy Tee')">Acquire</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card" data-category="vessels">
+                    <div class="card-visual-container">
+                        <span class="card-tag">EARTH // FORM</span>
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M40 85 C40 85, 30 65, 30 45 C30 25, 42 20, 50 20 C58 20, 70 25, 70 45 C70 65, 60 85, 60 85 Z" fill="rgba(212, 175, 55, 0.05)" stroke="var(--gold-color)" stroke-width="1.5"/>
+                            <path d="M30 50 C40 60, 60 60, 70 50" stroke="currentColor" stroke-width="1.5"/>
+                            <text x="46" y="42" fill="var(--gold-color)" font-family="monospace" font-size="10">ⵣ</text>
+                        </svg>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Volcanic Clay Vessel</h3>
+                        <p class="product-sub">Tidghine Clay & Gold Inlays</p>
+                        <p class="product-desc">
+                            Authentic mountain clay thrown manually in the Rif foothills, featuring gold-plated circuit diagrams.
+                        </p>
+                        <div class="product-footer">
+                            <span class="product-price">$185.00</span>
+                            <button class="buy-btn" onclick="attemptPurchase('Volcanic Clay Vessel')">Acquire</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card" data-category="silver">
+                    <div class="card-visual-container">
+                        <span class="card-tag">METALLIC // INTERFACE</span>
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="30" y="30" width="40" height="40" transform="rotate(45 50 50)" fill="rgba(76, 8, 8, 0.1)" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="50" cy="50" r="10" stroke="var(--gold-color)" stroke-width="1.5"/>
+                            <text x="46" y="54" fill="var(--gold-color)" font-family="monospace" font-size="12">ⵣ</text>
+                        </svg>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Silver Tifinagh Ring</h3>
+                        <p class="product-sub">950 Silver & Contacts Node</p>
+                        <p class="product-desc">
+                            Pure sterling silver band carved with traditional resistant letterings, fitted with cold data capsule storage.
+                        </p>
+                        <div class="product-footer">
+                            <span class="product-price">$310.00</span>
+                            <button class="buy-btn" onclick="attemptPurchase('Silver Tifinagh Ring')">Acquire</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ABOUT RIF50 BRAND -->
+        <section id="about">
+            <div class="about-wrapper">
+                <div class="about-visual">
+                    <div class="about-circle">
+                        <div class="about-yaz">ⵣ</div>
+                        <div class="about-subtitle">MOUNT TIDGHINE ORIGIN</div>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <span class="section-tag">The Creed</span>
+                    <h2 class="section-title">THE SYNAPSE BETWEEN <span>REALITY & CRAFT</span></h2>
+                    
+                    <div class="quote-block">
+                        "Rif is my culture, my pride, and my home."
+                    </div>
+
+                    <p class="about-content-desc">
+                        RIF50 is born from the mountain range of the Moroccan Rif—a geography of resilience, rugged landscapes, and stunning artistic expression. Here, the legendary <b>Yaz (ⵣ)</b> represents life, freedom, and human dignity. 
+                    </p>
+                    <p class="about-content-desc">
+                        Our brand merges this legacy with tomorrow's tools. By preserving physical hand-craftsmanship of cooperatives and wrapping them with secure digital identities, we protect the livelihoods of Moroccan families while offering unmatched premium assets to collectors worldwide.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <span class="stat-num">100%</span>
+                            <span class="stat-label">Artisan Made</span>
+                        </div>
+                        <div class="stat-item" style="border-left: 1px solid var(--border-muted); padding-left: 20px;">
+                            <span class="stat-num">RIF</span>
+                            <span class="stat-label">Cooperative Sourced</span>
+                        </div>
+                        <div class="stat-item" style="border-left: 1px solid var(--border-muted); padding-left: 20px;">
+                            <span class="stat-num">NFC</span>
+                            <span class="stat-label">Encrypted Keys</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <a href="#home" class="footer-logo">
+                <img src="https://www.rif50.com/r50.png" alt="RIF50" onerror="this.style.display='none';">
+                <span class="footer-logo-text">RIF50</span>
+            </a>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#promo">Campaign</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#about">Heritage</a>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 RIF50. Proudly Amazigh. All Rights Secured.</div>
+                <div>Designed in fusion with <b>reality & digital</b>.</div>
+            </div>
+        </footer>
+
+        <!-- CUSTOM TOAST -->
+        <div id="toast">
+            <div class="toast-content">
+                <div class="toast-title" id="toast-title">Notification</div>
+                <div class="toast-desc" id="toast-desc">Information updated.</div>
+            </div>
+            <button class="toast-close" onclick="hideToast()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
     </div>
 
-    <div class="footer">
-       
-    </div>
+    <!-- CODE SCRIPT -->
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 2;
+        let isPromoChosen = false;
+        let remainingSlots = 6;
 
+        const campaignSymbols = [
+            { char: "ⵣ", name: "Yaz" },
+            { char: "ⵜ", name: "Tifinagh" },
+            { char: "ⵔ", name: "Rif" },
+            { char: "ⵎ", name: "Moulouya" },
+            { char: "ⵙ", name: "Sovereign" },
+            { char: "ⴼ", name: "Free" },
+            { char: "ⵣ", name: "Yaz" },
+            { char: "ⴳ", name: "Gate" },
+            { char: "ⴷ", name: "Digital" },
+            { char: "ⵍ", name: "Legacy" },
+            { char: "ⵏ", name: "Nodes" },
+            { char: "ⵣ", name: "Yaz" }
+        ];
+
+        window.onload = function() {
+            // Focus on passcode field to ensure elegant flow
+            const passInput = document.getElementById('access-password');
+            if(passInput) {
+                passInput.focus();
+                passInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkAccess();
+                    }
+                });
+            }
+
+            // Generate Promo Node Map
+            generateMatrixMap();
+        };
+
+        // Gatekeeper lock check (UPDATED PASS TO RIF50R)
+        function checkAccess() {
+            const passVal = document.getElementById('access-password').value.trim();
+            const errorAlert = document.getElementById('error-alert');
+
+            if(passVal.toUpperCase() === 'RIF50R') {
+                errorAlert.style.display = 'none';
+                
+                // Hide gatekeeper
+                const gatekeeper = document.getElementById('gatekeeper');
+                gatekeeper.style.opacity = '0';
+                gatekeeper.style.transform = 'translateY(-100%)';
+
+                // Display main dashboard space
+                const mainSec = document.getElementById('main-content');
+                mainSec.style.display = 'block';
+                setTimeout(() => {
+                    mainSec.style.opacity = '1';
+                    showToast("Access Verified", "Decrypting secure cyber-Amazigh terminal...");
+                }, 50);
+
+                setTimeout(() => {
+                    gatekeeper.style.display = 'none';
+                }, 1000);
+            } else {
+                errorAlert.style.display = 'block';
+                errorAlert.classList.add('animate-bounce');
+                setTimeout(() => {
+                    errorAlert.classList.remove('animate-bounce');
+                }, 1000);
+            }
+        }
+
+        // Slide management
+        function setSlide(index) {
+            for(let i=0; i<totalSlides; i++) {
+                document.getElementById(`slide-${i}`).classList.remove('active');
+                document.getElementById(`dot-${i}`).classList.remove('active');
+            }
+            document.getElementById(`slide-${index}`).classList.add('active');
+            document.getElementById(`dot-${index}`).classList.add('active');
+            currentSlide = index;
+        }
+
+        // Auto transition is not forced, but keyboard controls remain
+        function nextSlide() {
+            let nextIndex = currentSlide + 1;
+            if (nextIndex >= totalSlides) nextIndex = 0;
+            setSlide(nextIndex);
+        }
+
+        function prevSlide() {
+            let prevIndex = currentSlide - 1;
+            if (prevIndex < 0) prevIndex = totalSlides - 1;
+            setSlide(prevIndex);
+        }
+
+        // Interactive T-shirt front/back toggle
+        function toggleTshirt(view) {
+            const frontSvg = document.getElementById('tshirt-svg-front');
+            const backSvg = document.getElementById('tshirt-svg-back');
+            const btnFront = document.getElementById('btn-toggle-front');
+            const btnBack = document.getElementById('btn-toggle-back');
+
+            if (view === 'front') {
+                frontSvg.style.display = 'block';
+                backSvg.style.display = 'none';
+                btnFront.classList.add('active');
+                btnBack.classList.remove('active');
+                showToast("Front Details Loaded", "Featuring the R50 monogram & geometric left vertical band.");
+            } else {
+                frontSvg.style.display = 'none';
+                backSvg.style.display = 'block';
+                btnFront.classList.remove('active');
+                btnBack.classList.add('active');
+                showToast("Back Art Loaded", '"Rif is my culture, my pride, and my home."');
+            }
+        }
+
+        // Gallery Filter Helper
+        function filterGallery(category) {
+            // Update filter button UI states
+            const buttons = document.querySelectorAll('.gallery-filter .filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const items = document.querySelectorAll('.products-grid .product-card');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Mobile toggle drawer helper
+        function toggleDrawer() {
+            const drawer = document.getElementById('mobile-drawer');
+            if(drawer.style.display === 'flex') {
+                drawer.style.display = 'none';
+            } else {
+                drawer.style.display = 'flex';
+            }
+        }
+
+        function setActiveNav(element) {
+            const links = document.querySelectorAll('nav a');
+            links.forEach(l => l.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Matrix Grid Builder
+        function generateMatrixMap() {
+            const grid = document.getElementById('matrix-grid');
+            grid.innerHTML = '';
+
+            campaignSymbols.forEach((sym, index) => {
+                const buttonNode = document.createElement('button');
+                buttonNode.className = 'matrix-tile';
+                buttonNode.id = `node-${index}`;
+                buttonNode.setAttribute('onclick', `attemptNodeReveal(${index})`);
+                
+                buttonNode.innerHTML = `
+                    <div class="tile-symbol">${sym.char}</div>
+                    <div class="tile-name">${sym.name}</div>
+                    <div class="frame-corner top-left" style="width: 5px; height: 5px;"></div>
+                    <div class="frame-corner top-right" style="width: 5px; height: 5px;"></div>
+                    <div class="frame-corner bottom-left" style="width: 5px; height: 5px;"></div>
+                    <div class="frame-corner bottom-right" style="width: 5px; height: 5px;"></div>
+                `;
+                grid.appendChild(buttonNode);
+            });
+        }
+
+        // Node play action
+        function attemptNodeReveal(index) {
+            if(isPromoChosen) {
+                showToast("Already Played", "You have generated a code below. Complete your registration to secure it.");
+                return;
+            }
+
+            isPromoChosen = true;
+            const node = document.getElementById(`node-${index}`);
+            node.classList.add('selected');
+
+            // Sound Synth (Web Audio API)
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.25);
+            } catch(e) {}
+
+            // Probability simulation
+            const isWinner = (index % 3 === 0) && remainingSlots > 0;
+            const resultsBox = document.getElementById('results-box');
+            
+            setTimeout(() => {
+                resultsBox.style.display = 'block';
+                if(isWinner) {
+                    document.getElementById('free-win-block').style.display = 'block';
+                    document.getElementById('half-win-block').style.display = 'none';
+                    remainingSlots--;
+                    document.getElementById('slots-count').innerText = remainingSlots;
+                    showToast("Victory Secured", "You found a free order slot! Register email to complete.");
+                } else {
+                    document.getElementById('free-win-block').style.display = 'none';
+                    document.getElementById('half-win-block').style.display = 'block';
+                    showToast("Discount Unlocked", "50% Off campaign code granted!");
+                }
+                
+                resultsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 600);
+        }
+
+        // Copy mechanism
+        function copyCouponCode(code) {
+            try {
+                const tempField = document.createElement("input");
+                tempField.value = code;
+                document.body.appendChild(tempField);
+                tempField.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempField);
+                showToast("Copied to Clipboard", `Promo code: '${code}' is ready.`);
+            } catch (err) {
+                showToast("Error Copying", "Select the text manually to copy.");
+            }
+        }
+
+        // Submit registration email
+        function submitPromoClaim() {
+            const email = document.getElementById('claim-email').value.trim();
+            if(!email || !email.includes('@')) {
+                showToast("Invalid Email", "Please enter a correct email to link coupon.");
+                return;
+            }
+            document.getElementById('claim-success-msg').style.display = 'block';
+            showToast("System Secured", `Promotion successfully bound to ${email}`);
+        }
+
+        // Buy trigger
+        function attemptPurchase(name) {
+            showToast("Sync Initialized", `Checking inventory for ${name}...`);
+            setTimeout(() => {
+                window.location.href = "#promo";
+                showToast("Apply Promo", "Remember to apply your free or half-price coupon code!");
+            }, 1200);
+        }
+
+        // Custom clean Toast
+        function showToast(title, desc) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-desc').innerText = desc;
+            toast.classList.add('show');
+            setTimeout(() => {
+                hideToast();
+            }, 5000);
+        }
+
+        function hideToast() {
+            document.getElementById('toast').classList.remove('show');
+        }
+    </script>
 </body>
 </html>
